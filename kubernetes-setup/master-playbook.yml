@@ -1,5 +1,5 @@
 ---
-- hosts: k8s
+- hosts: all
   become: true
   tasks:
   - name: Replace Apt source to Aliyun
