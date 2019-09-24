@@ -2,6 +2,9 @@
 - hosts: all
   become: true
   tasks:
+  - name: Replace Apt source to Aliyun
+    command: sed -i s/archive.ubuntu.com/mirrors.aliyun.com/g /etc/apt/sources.list && sed -i s/security.ubuntu.com/mirrors.aliyun.com/g /etc/apt/sources.list && apt-get update && apt-get upgrade
+
   - name: Install packages that allow apt to be used over HTTPS
     apt:
       name: "{{ packages }}"
@@ -17,12 +20,12 @@
 
   - name: Add an apt signing key for Docker
     apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
+      url: http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg
       state: present
 
   - name: Add apt repository for stable version
     apt_repository:
-      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+      repo: deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) xenial stable
       state: present
 
   - name: Install docker and its dependecies
@@ -77,11 +80,6 @@
         - kubelet 
         - kubeadm 
         - kubectl
-
-  - name: Configure node ip
-    lineinfile:
-      path: /etc/default/kubelet
-      line: KUBELET_EXTRA_ARGS=--node-ip={{ node_ip }}
 
   - name: Restart kubelet
     service:
