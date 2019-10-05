@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-KUBE_VERSION=v1.16.0
+KUBE_VERSION=v1.14.7
 KUBE_PAUSE_VERSION=3.1
-ETCD_VERSION=3.3.15-0
-CORE_DNS_VERSION=1.6.2
+ETCD_VERSION=3.3.10
+CORE_DNS_VERSION=1.3.1
 
 GCR_URL=k8s.gcr.io
 ALIYUN_URL=registry.cn-hangzhou.aliyuncs.com/google_containers

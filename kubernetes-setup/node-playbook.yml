@@ -8,6 +8,12 @@
       regexp: 'archive.ubuntu.com'
       replace: 'mirrors.aliyun.com'
 
+  - name: Replace Apt Security source to Aliyun
+    replace:
+      path: /etc/apt/sources.list
+      regexp: 'security.ubuntu.com'
+      replace: 'mirrors.aliyun.com'
+
   - name: Install packages that allow apt to be used over HTTPS
     apt:
       name: "{{ packages }}"
@@ -80,9 +86,9 @@
       update_cache: yes
     vars:
       packages:
-        - kubelet 
-        - kubeadm 
-        - kubectl 
+        - kubelet=1.14.7-00
+        - kubeadm=1.14.7-00
+        - kubectl=1.14.7-00
 
   - name: Configure node ip
     lineinfile:
