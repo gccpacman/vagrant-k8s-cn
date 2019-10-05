@@ -7,6 +7,12 @@
       path: /etc/apt/sources.list
       regexp: 'archive.ubuntu.com'
       replace: 'mirrors.aliyun.com'
+  
+  - name: Replace Apt Security source to Aliyun
+    replace:
+      path: /etc/apt/sources.list
+      regexp: 'security.ubuntu.com'
+      replace: 'mirrors.aliyun.com'
 
   - name: Install packages that allow apt to be used over HTTPS
     apt:
@@ -80,9 +86,9 @@
       update_cache: yes
     vars:
       packages:
-        - kubelet 
-        - kubeadm 
-        - kubectl 
+        - kubelet=1.14.7-00
+        - kubeadm=1.14.7-00
+        - kubectl=1.14.7-00
 
   - name: Configure node ip
     lineinfile:
@@ -106,7 +112,7 @@
     command: /tmp/pull-k8s-image.sh
 
   - name: Initialize the Kubernetes cluster using kubeadm
-    command: sudo kubeadm init --kubernetes-version=v1.16.0 --apiserver-advertise-address="192.168.50.10" --apiserver-cert-extra-sans="192.168.50.10"  --node-name k8s-master --pod-network-cidr=192.168.0.0/16
+    command: sudo kubeadm init --kubernetes-version=v1.14.7 --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}"  --node-name master14 --pod-network-cidr=192.168.0.0/16
 
   - name: Setup kubeconfig for vagrant user
     command: "{{ item }}"
@@ -127,6 +133,10 @@
     local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
     become: no
   
+  - name: fetch kube config
+    fetch: src="/home/vagrant/.kube/config" dest="./kube-config"
+    become: no
+
   handlers:
     - name: docker status
       service: name=docker state=started
