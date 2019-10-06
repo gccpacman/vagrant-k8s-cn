@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "master14" do |master|
         master.vm.box = IMAGE_NAME
         master.vm.network "private_network", ip: "192.168.50.110"
-        master.vm.hostname = "master-110"
+        master.vm.hostname = "master14"
         master.vm.provision "ansible" do |ansible|
             ansible.playbook = "kubernetes-setup/master-playbook.yml"
             ansible.extra_vars = {
