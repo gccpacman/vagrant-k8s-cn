@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: Copy image pull script
+    copy: 
+      src: pull-k8s-image.sh
+      dest: /tmp/pull-k8s-image.sh
+      mode: '0777'
+
+  - name: Pull the blocked Kubernetes image
+    command: /tmp/pull-k8s-image.sh
