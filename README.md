@@ -13,6 +13,18 @@
 
     $ vagrant up
 
-在`vagrant up`成功执行后, 可以在kube-config/master14/home/vagrant/.kube/config下找到kubenetes的配置文件,放置在宿主机`$HOME`目录下的.kube/config文件夹下,就可以成功调用kubectl的命令了
+在`vagrant up`成功执行后, 可以在`kube-config/master14/home/vagrant/.kube/config`下找到kubenetes的配置文件,放置在宿主机`$HOME`目录下的`.kube/config`文件夹下,就可以成功调用`kubectl`的命令了
 
-   
+# helm
+
+    $ helm init
+
+`Helm`安装后需要额外的步骤获得权限，需要[额外的权限](https://github.com/helm/helm/issues/3130):
+
+    $ kubectl --namespace kube-system create serviceaccount tiller
+    $ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+    $ kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' 
+
+# 调用自定义 ansible playbooks
+
+     $ ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory some-playbook.yml
