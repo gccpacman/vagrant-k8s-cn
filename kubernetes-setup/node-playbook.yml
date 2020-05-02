@@ -8,12 +8,6 @@
       regexp: 'archive.ubuntu.com'
       replace: 'mirrors.aliyun.com'
 
-  - name: Replace Apt Security source to Aliyun
-    replace:
-      path: /etc/apt/sources.list
-      regexp: 'security.ubuntu.com'
-      replace: 'mirrors.aliyun.com'
-
   - name: Install packages that allow apt to be used over HTTPS
     apt:
       name: "{{ packages }}"
@@ -34,7 +28,7 @@
 
   - name: Add apt repository for stable version
     apt_repository:
-      repo: deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial stable
+      repo: deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic stable
       state: present
 
   - name: Install docker and its dependecies
@@ -75,7 +69,7 @@
 
   - name: Adding apt repository for Kubernetes
     apt_repository:
-      repo: deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+      repo: deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-bionic main
       state: present
       filename: kubernetes.list
 
