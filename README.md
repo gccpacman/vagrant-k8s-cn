@@ -3,7 +3,7 @@
 ## 依赖:
 
 1. git
-2. Virtualbox 或者其他虚拟机平台(未尝试)
+2. Virtualbox 或者其他虚拟机平台(需要更改Vagrantfile里的provider等参数)
 3. Vagrant
 4. 主机拥有`bash`或者`zsh`环境, 以便执行`ansible playbook`
 
