@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
         v.cpus = 2
     end
 
-    config.vm.define "master14" do |master|
+    config.vm.define "master" do |master|
         master.vm.box = IMAGE_NAME
         master.vm.network "private_network", ip: "192.168.171.110"
         master.vm.hostname = "master-110"
@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
     end
 
     (1..N).each do |i|
-        config.vm.define "node14-#{i}" do |node|
+        config.vm.define "node-#{i}" do |node|
             node.vm.box = IMAGE_NAME
             node.vm.network "private_network", ip: "192.168.171.#{i + 110}"
             node.vm.hostname = "node14-#{i}"
