@@ -28,7 +28,7 @@
 
   - name: Add apt repository for stable version
     apt_repository:
-      repo: deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic stable
+      repo: deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial stable
       state: present
 
   - name: Install docker and its dependecies
@@ -42,7 +42,7 @@
       - docker-ce-cli 
       - containerd.io
     notify:
-      - docker status
+      - docker info
 
   - name: Add vagrant user to docker group
     user:
@@ -69,7 +69,7 @@
 
   - name: Adding apt repository for Kubernetes
     apt_repository:
-      repo: deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-bionic main
+      repo: deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
       state: present
       filename: kubernetes.list
 
@@ -80,9 +80,9 @@
       update_cache: yes
     vars:
       packages:
-        - kubelet=1.14.7-00
-        - kubeadm=1.14.7-00
-        - kubectl=1.14.7-00
+        - kubelet
+        - kubeadm
+        - kubectl
 
   - name: Configure node ip
     lineinfile:

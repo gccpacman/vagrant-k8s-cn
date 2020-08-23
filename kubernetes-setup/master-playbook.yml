@@ -28,7 +28,7 @@
 
   - name: Add apt repository for stable version
     apt_repository:
-      repo: deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic stable
+      repo: deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial stable
       state: present
 
   - name: Install docker and its dependecies
@@ -42,7 +42,7 @@
       - docker-ce-cli 
       - containerd.io
     notify:
-      - docker status
+      - docker info
 
   - name: Add vagrant user to docker group
     user:
@@ -69,7 +69,7 @@
 
   - name: Adding apt repository for Kubernetes
     apt_repository:
-      repo: deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-bionic main
+      repo: deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
       state: present
       filename: kubernetes.list
 
@@ -80,9 +80,9 @@
       update_cache: yes
     vars:
       packages:
-        - kubelet=1.14.7-00
-        - kubeadm=1.14.7-00
-        - kubectl=1.14.7-00
+        - kubelet
+        - kubeadm
+        - kubectl
 
   - name: Configure node ip
     lineinfile:
@@ -106,7 +106,7 @@
     command: /tmp/pull-k8s-image.sh
 
   - name: Initialize the Kubernetes cluster using kubeadm
-    command: sudo kubeadm init --kubernetes-version=v1.14.7 --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}"  --node-name master14 --pod-network-cidr=192.168.0.0/16
+    command: sudo kubeadm init --kubernetes-version=v1.18.6 --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}"  --node-name master14 --pod-network-cidr=10.179.0.0/16
 
   - name: Setup kubeconfig for vagrant user
     command: "{{ item }}"
@@ -128,7 +128,7 @@
     become: no
   
   - name: fetch kube config
-    fetch: src="/home/vagrant/.kube/config" dest="./kube-config"
+    fetch: src="/home/vagrant/.kube/config" dest="./"
     become: no
 
   handlers:
