@@ -41,8 +41,6 @@
       - docker-ce 
       - docker-ce-cli 
       - containerd.io
-    notify:
-      - docker info
 
   - name: Add vagrant user to docker group
     user:
@@ -106,11 +104,10 @@
       state: restarted
   
   - name: Copy the join command to server location
-    copy: src=join-command dest=/tmp/join-command.sh mode=0777
+    copy:
+      src: join-command
+      dest: /tmp/join-command.sh
+      mode: "0777"
 
   - name: Join the node to cluster
     command: sh /tmp/join-command.sh
-
-  handlers:
-    - name: docker status
-      service: name=docker state=started

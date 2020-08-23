@@ -41,8 +41,6 @@
       - docker-ce 
       - docker-ce-cli 
       - containerd.io
-    notify:
-      - docker info
 
   - name: Add vagrant user to docker group
     user:
@@ -106,7 +104,8 @@
     command: /tmp/pull-k8s-image.sh
 
   - name: Initialize the Kubernetes cluster using kubeadm
-    command: sudo kubeadm init --kubernetes-version=v1.18.6 --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}"  --node-name master14 --pod-network-cidr=10.179.0.0/16
+    command: kubeadm init --kubernetes-version=v1.18.6 --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}"  --node-name master --pod-network-cidr=10.179.0.0/16
+    become: yes
 
   - name: Setup kubeconfig for vagrant user
     command: "{{ item }}"
@@ -128,9 +127,8 @@
     become: no
   
   - name: fetch kube config
-    fetch: src="/home/vagrant/.kube/config" dest="./"
+    fetch: 
+      src: /home/vagrant/.kube/config 
+      dest: ./kube-config
     become: no
 
-  handlers:
-    - name: docker status
-      service: name=docker state=started
