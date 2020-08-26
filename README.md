@@ -9,7 +9,7 @@
     - 随时可以更改脚本，可以使用`vagrant provision master/node{n}`随时重新执行`provision`操作
     - 替换了阿里源，安装ubuntu依赖包，Docker, kubernetes等
     - Master获得`JoinCommand.sh`命令并复制宿主机，Node节点启动时将`JoinCommand.sh`复制到Node节点虚拟机，将加入K8s集群
-    - 获得Kube config文件到宿主机
+    - 获得`Kube Config`文件到宿主机，可以自行复制或者`merge`到`$HOME/.kube/config`，或者在执行`kubectl`命令时用`--kube-config .kube\config`指定该配置文件
 - 可以随时使用`ansible`操作所有节点（额外配置`/etc/ansible/hosts`即可，不在此说明）
 
 ## 当前版本
