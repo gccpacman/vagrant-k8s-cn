@@ -21,9 +21,9 @@
 
 ## 默认provision的机器类型和功能
 
-master: k8s的master节点，ip最后一位100
-node-{n}: k8s的worker节点，可以在Vagrantfile里改变`N`的值，ip最后一位100开头
-bnode-{bn}: 普通节点，可以在Vagrantfile里改变`BN`的值，安装docker环境，和k8s无关但在同一个网络，ip最后一位10开头
+- master: k8s的master节点，ip最后一位100
+- node-{n}: k8s的worker节点，可以在Vagrantfile里改变`N`的值，ip最后一位100开头
+- bnode-{bn}: 普通节点，可以在Vagrantfile里改变`BN`的值，安装docker环境，和k8s无关但在同一个网络，ip最后一位10开头
 
 ## 当前版本
 
