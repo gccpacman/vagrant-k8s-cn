@@ -2,3 +2,4 @@
 *.retry
 kubernetes-setup/join-command
 kubernetes-setup/kube-config
+.DS_Store
