@@ -11,15 +11,30 @@ Vagrant.configure("2") do |config|
         v.cpus = 2
     end
 
+    config.vm.define "jenkins" do |jenkins|
+        jenkins.vm.box = IMAGE_NAME
+        jenkins.vm.network "private_network", ip: "#{SUBNET_CIDR}50"
+        jenkins.vm.hostname = "master"
+        jenkins.vm.provision "basic", type: "ansible" do |ansible|
+            ansible.playbook = "setup/basic-playbook.yml"
+        end
+        jenkins.vm.provision "docker", type: "ansible" do |ansible|
+            ansible.playbook = "setup/docker-playbook.yml"
+        end
+        jenkins.vm.provision "jenkins", type:"ansible" do |ansible|
+            ansible.playbook = "jenkins/jekins-playbook.yml"
+        end
+    end
+
     config.vm.define "master" do |master|
         master.vm.box = IMAGE_NAME
         master.vm.network "private_network", ip: "#{SUBNET_CIDR}100"
         master.vm.hostname = "master"
         master.vm.provision "basic", type: "ansible" do |ansible|
-            ansible.playbook = "basic-setup/basic-playbook.yml"
+            ansible.playbook = "setup/basic-playbook.yml"
         end
         master.vm.provision "docker", type: "ansible" do |ansible|
-            ansible.playbook = "docker-setup/docker-playbook.yml"
+            ansible.playbook = "setup/docker-playbook.yml"
         end
         master.vm.provision "kubernetes", type: "ansible" do |ansible|
             ansible.playbook = "kubernetes-setup/kubernetes-playbook.yml"
@@ -39,10 +54,10 @@ Vagrant.configure("2") do |config|
             node.vm.hostname = "node-#{i}"
 
             node.vm.provision "basic", type: "ansible" do |ansible|
-                ansible.playbook = "basic-setup/basic-playbook.yml"
+                ansible.playbook = "setup/basic-playbook.yml"
             end
             node.vm.provision "docker", type: "ansible" do |ansible|
-                ansible.playbook = "docker-setup/docker-playbook.yml"
+                ansible.playbook = "setup/docker-playbook.yml"
             end
             node.vm.provision "kubernetes", type: "ansible" do |ansible|
                 ansible.playbook = "kubernetes-setup/kubernetes-playbook.yml"
@@ -62,10 +77,10 @@ Vagrant.configure("2") do |config|
             bnode.vm.network "private_network", ip: "#{SUBNET_CIDR}#{i + 10}"
             bnode.vm.hostname = "node-#{i}"
             bnode.vm.provision "basic", type: "ansible" do |ansible|
-                ansible.playbook = "basic-setup/basic-playbook.yml"
+                ansible.playbook = "setup/basic-playbook.yml"
             end
             bnode.vm.provision "docker", type: "ansible" do |ansible|
-                ansible.playbook = "docker-setup/docker-playbook.yml"
+                ansible.playbook = "setup/docker-playbook.yml"
             end
         end
     end
