@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
             ansible.playbook = "setup/docker-playbook.yml"
         end
         jenkins.vm.provision "jenkins", type:"ansible" do |ansible|
-            ansible.playbook = "jenkins/jekins-playbook.yml"
+            ansible.playbook = "jenkins/jenkins-playbook.yml"
         end
     end
 

@@ -40,3 +40,9 @@
 PS: 因为`ansible`不支持windows，但是windows 10的`wsl(Windows subsystem for Linux)`可以使用ansible，只要让`wsl`可以调用Windows的`Vagrant`即可，具体方法可以参考[Vagrant官方文档](https://www.vagrantup.com/docs/other/wsl.html)，或者我的一篇博客也有相关说明:  [WSL无缝使用windows的Vagrant](https://gccpacman.github.io/wslwu-feng-shi-yong-windowsde-vagrant.html)。
 
    
+# Jenkins
+
+获取Jenkins原始密码： 
+
+    vagrant ssh jenkins -c "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
+

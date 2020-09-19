@@ -1,31 +1,34 @@
 ---
 - hosts: all
   become: true
-  tasks:
-  - name: install wget
-    yum:
-      name: wget
+  tasks:  # - name: Install packages and dependencies
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+      state: present
+    with_items:
+      - openjdk-8-jdk  # this specific version is needed for Jenkins to run
+      - libfontconfig
+      - libffi-dev
+      - libncurses5-dev
+
+  - name: Add the Jenkins public GPG key to the apt repo
+    apt_key: 
+      url: https://pkg.jenkins.io/debian/jenkins.io.key
+      id: 62A9756BFD780C377CF24BA8FCEF32E745F2C3D5
+      file: /tmp/jenkins.io.key
       state: present
 
-  - name: install openjdk
-    yum:
-      name: java-1.8.0-openjdk
+  - name: Add Jenkins apt repo to the trusted sources list
+    apt_repository: 
+      repo: 'deb https://pkg.jenkins.io/debian binary/'
       state: present
 
-  - name: download jenkins.repo
-    get_url:
-      url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
-      dest: /etc/yum.repos.d/jenkins.repo
-
-  - name: import jenkins key
-    rpm_key:
+  - name: Install Jenkins server
+    apt: 
+      name: jenkins 
       state: present
-      key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
-
-  - name: install jenkins
-    yum:
-      name: jenkins
-      state: present
+      update_cache: yes
 
   - name: start jenkins
     systemd:
@@ -38,7 +41,8 @@
       enabled: true
 
   - name: sleep for 30 seconds and continue with play
-    wait_for: timeout=30
+    wait_for: 
+      timeout: 30
     delegate_to: localhost
 
   - name: init password jenkin
